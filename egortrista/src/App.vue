@@ -17,7 +17,7 @@ const draft = ref("");
 
 const messages = ref<Message[]>([]);
 
-const status = ref("пидарасыыыыыыыыююююююю");
+const status = ref("пидарасыыыы");
 
 //подключение к бд пока его нет использвуем нуул
 let db:Database | null=null;
@@ -102,6 +102,7 @@ onMounted(async ()=>{
               placeholder="send message"
               autocomplete="off"
           />
+          <button type="submit">сиськи</button>
         </form>
       </div>
     </section>
