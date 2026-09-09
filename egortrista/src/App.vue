@@ -2,7 +2,7 @@
 //импортим из вуе две 2 two функции
 //onMounted = запускает код после отображения всех компонентов
 //ref - быстрая переменая)
-import {onMounted ,ref } from "vue";
+import {onMounted ,ref, nextTick } from "vue";
 
 import Database from "@tauri-apps/plugin-sql";
 
@@ -39,12 +39,25 @@ async function sendMessage(){
   );
   draft.value = "";
   await loadMessages();
+  await nextTick();
+  scrollToBottom();
 }
+
+//функция скролла вниз
+function scrollToBottom() {
+  const messagesContainer = document.querySelector('.messages-wrapper');
+  if (messagesContainer) {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+}
+
 onMounted(async ()=>{
   try{
     db= await Database.load("sqlite:messenger.db");
     await loadMessages();
     status.value="local message story";
+    await nextTick();
+    scrollToBottom();
   }catch (error){
     console.error(error);
     status.value="саси пипиндрик"
@@ -64,47 +77,47 @@ onMounted(async ()=>{
       </span>
     </header>
     <section class="chat">
-      <div class ="chat-infg">
+      <div class="chat-infg">
         <h2>1st chat</h2>
         <p>zalupa</p>
       </div>
-      <div class="messages">
-      <div
-        v-if="messages.length === 0"
-        class="empty"
-        >
-        <strong>
-          123123
-          </strong>
-        <span>dfghfghfghfrgh</span>
+      <div class="messages-wrapper">
+        <div class="messages">
+          <div
+              v-if="messages.length === 0"
+              class="empty"
+          >
+            <strong>
+              123123
+            </strong>
+            <span>dfghfghfghfrgh</span>
+          </div>
+          <article
+              v-for="message in messages"
+              :key="message.id"
+              class="message"
+          >
+            <p>{{message.body}}</p>
+            <footer>
+              <span>{{message.author}}</span>
+              <span>|</span>
+              <span>{{message.created_ad}}</span>
+            </footer>
+          </article>
         </div>
       </div>
-      <article
-      v-for="message in messages"
-      :key="message.id"
-      class = "message"
+      <form
+          class="composer"
+          @submit.prevent="sendMessage()"
       >
-        <p>{{message.body}}</p>
-        <footer>
-          <span>{{message.author}}</span>
-          <span>|</span>
-          <span>{{message.created_ad}}</span>
-        </footer>
-      </article>
-      <div>
-        <form
-        class="composer"
-        @submit.prevent="sendMessage()"
-        >
-          <input
-              v-model="draft"
-              type="text"
-              placeholder="send message"
-              autocomplete="off"
-          />
-          <button type="submit">сиськи</button>
-        </form>
-      </div>
+        <input
+            v-model="draft"
+            type="text"
+            placeholder="send message"
+            autocomplete="off"
+        />
+        <button type="submit">сиськи</button>
+      </form>
     </section>
   </main>
 </template>
@@ -123,18 +136,20 @@ onMounted(async ()=>{
   margin: 0;
   font-family:
       Inter,
-  system-ui,
-  -apple-system,
-  BlickMacSystemFont,
-  "Segoe UI",
-  sans-serif;
+      system-ui,
+      -apple-system,
+      BlickMacSystemFont,
+      "Segoe UI",
+      sans-serif;
 
   color:#f2f3f5;
   background: #111318;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .app{
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -146,6 +161,7 @@ onMounted(async ()=>{
   padding: 18px 24px;
   border-bottom: 1px solid #292c34;
   background: #17191f;
+  flex-shrink: 0;
 
 }
 .header h1{
@@ -175,6 +191,7 @@ onMounted(async ()=>{
 
 }
 .chat-infg{
+  flex-shrink: 0;
   padding: 20px 25px;
   border-bottom: 1px solid #123543;
 
@@ -187,15 +204,19 @@ onMounted(async ()=>{
   margin: 5px 0 0;
   color: #3546;
 
-
 }
-.messages{
+.messages-wrapper {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;
+}
+
+.messages{
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 24px;
+  padding-bottom: 20px;
 }
 .empty{
   margin: auto;
@@ -228,9 +249,9 @@ onMounted(async ()=>{
   color: #001;
   font-size: 10px;
 
-
 }
 .composer{
+  flex-shrink: 0;
   display: flex;
   gap: 10px;
   padding: 16px 20px;
@@ -265,5 +286,4 @@ onMounted(async ()=>{
 .composer button:hover{
   background: #4779e8;
 }
-
 </style>
