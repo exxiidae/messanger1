@@ -9,7 +9,7 @@ const emit = defineEmits<{
 const draft = ref("");
 const showEmoji = ref(false);
 
-const emojis = ["◕‿◕", "(◕^^◕)", "{｡^◕‿◕^｡}", "◠ᴥ◠", "^︵^", "^_^", "~.~", "⌤", "☠", "☭", "♥", "☣"];
+const emojis = ["😀","😃","😄","😁","😆","😅","🤣","😂","🙂","🙃","🫠","😉","😇","🥰","😍","🤩","😘","☺","️😚","😙"];
 
 function submitMessage() {
   const body = draft.value.trim();
