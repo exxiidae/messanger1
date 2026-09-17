@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    sasha_itachi_1337_lib::run()
+    egortrista_lib::run()
 }

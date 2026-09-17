@@ -15,7 +15,7 @@ import type {Message} from "./types/message.ts";
 
 const messages = ref<Message[]>([]);
 
-const status = ref("Гомер бартов выпустил")
+const status = ref("эопа")
 
 // Подключение к бд, пока его нет используем null
 let db: Database | null = null;
@@ -52,7 +52,7 @@ onMounted(async ()=>{
   }catch (error){
     console.error(error);
 
-    status.value = "Ошибка подключения в бд"
+    status.value = "саси пипиндрик"
   }
 })
 </script>
@@ -63,7 +63,7 @@ onMounted(async ()=>{
     <section class="chat">
       <div class="chat-info">
           <h2>Первый чат</h2>
-          <p>strannost</p>
+          <p>zalupa</p>
 
 
       </div>
